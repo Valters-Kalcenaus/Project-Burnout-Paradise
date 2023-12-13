@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Constants for platform generation
-const float maxJumpHeight = 200.0f; // Maximum height the player can jump
+const float maxJumpHeight = 200.0f; 
 const float platformWidth = 100.0f;
 const float platformHeight = 20.0f;
 float topMostPos = 0;
@@ -10,6 +10,8 @@ float topMostPos = 0;
 Game::Game() : window(sf::VideoMode(600, 800), "Burnout Paradise"), currentState(MENU), highestPlatformY(800.f - 50.f), hazard(600.f), distraction(0.f, 0.f), distractionActive(false) {
     if (!font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf")) {
     }
+    // Set properties for enrgy, money, and so on...
+
     energyText.setFont(font);
     energyText.setCharacterSize(24);
     energyText.setFillColor(sf::Color::White);
@@ -23,13 +25,15 @@ Game::Game() : window(sf::VideoMode(600, 800), "Burnout Paradise"), currentState
     scoreText.setFillColor(sf::Color::White);
     scoreText.setPosition(10, 50);
 
+    // Configure the view to follow the player
     view.setSize(window.getSize().x, window.getSize().y);
     view.setCenter(window.getSize().x / 2, window.getSize().y / 2);
     window.setView(view);
 
+    // Initialize energy drink and money objects
     energyDrink = Energy((rand() % 580), (rand() % 100 - 200));
     money = Money((rand() % 580), (rand() % 100 - 200));
-    // Starting platform
+    // Starting platform <- this stays the same every time the game is launched
     float lastPlatformY = 350.f; // Starting Y position for the first platform
 
     platforms.push_back(Platform(300.f - platformWidth / 2, lastPlatformY, platformWidth, platformHeight, sf::Color::Red));
@@ -37,7 +41,7 @@ Game::Game() : window(sf::VideoMode(600, 800), "Burnout Paradise"), currentState
     // Generate additional platforms
     for (int i = 0; i < 5; ++i) {
         float x = static_cast<float>(rand() % static_cast<int>(600 - platformWidth));
-        float yGap = static_cast<float>((rand() % static_cast<int>(maxJumpHeight / 2)) + maxJumpHeight / 2);
+        float yGap = static_cast<float>((rand() % static_cast<int>(maxJumpHeight / 2)) + maxJumpHeight / 2); // logic ensuring the platforms are reachable for the player
         float y = lastPlatformY - yGap; // Ensure platforms don't go off-screen
         platforms.push_back(Platform(x, y, platformWidth, platformHeight, sf::Color::Red));
         lastPlatformY = y;
@@ -91,7 +95,7 @@ void Game::restartGame() {
 
     // Generate additional platforms
     for (int i = 0; i < 5; ++i) {
-        float x = static_cast<float>(rand() % 600 - platformWidth);
+        float x = static_cast<float>(rand() % 600 - platformWidth); //static cast means that the expression is set to float.
         float yGap = static_cast<float>((rand() % static_cast<int>(maxJumpHeight / 2)) + maxJumpHeight / 2);
         float y = lastPlatformY - yGap; // Ensure platforms don't go off-screen
         platforms.push_back(Platform(x, y, platformWidth, platformHeight, sf::Color::Red));
@@ -104,12 +108,13 @@ void Game::restartGame() {
 void Game::spawnDistraction() {
     if (!platforms.empty() && !distractionActive) {
         int platformIndex = rand() % platforms.size();
-        auto platformPos = platforms[platformIndex].getShape().getPosition(); // Assuming platforms use sprites
+        auto platformPos = platforms[platformIndex].getShape().getPosition(); 
         distraction.setPosition(platformPos.x + platforms[platformIndex].getShape().getSize().x / 2 - distraction.getSprite().getGlobalBounds().width / 2, platformPos.y - distraction.getSprite().getGlobalBounds().height);
         distractionActive = true;
     }
 }
 
+// update game state
 void Game::update(sf::Time deltaTime) {
     if (currentState == PLAYING) {
         player.handleInput();
@@ -208,25 +213,35 @@ void Game::update(sf::Time deltaTime) {
         }
 
         if (player.getSprite().getPosition().y < highestPlatformY - 100) {
+            // Generates a random x-coordinate 
             float x = static_cast<float>(rand() % (800 - 100));
+            //generates new highest platf
             float y = highestPlatformY - (100 + rand() % 150);
+
+            //adds vector
             platforms.push_back(Platform(x, y, platformWidth, platformHeight, sf::Color::Red));
             highestPlatformY = y;
         }
 
+        // Remove platforms no longer visible
         platforms.erase(std::remove_if(platforms.begin(), platforms.end(),
             [this](const Platform& platform) {
                 return platform.getTopPosition() > view.getCenter().y + window.getSize().y / 2 + 200;
             }), platforms.end());
+
+        //updates the highest position
         if (player.getSprite().getPosition().y < topMostPos) {
             topMostPos = player.getSprite().getPosition().y;
         }
+
         if (player.getMoney() < -500) {
             currentState = GAME_OVER;
         }
+
         if (player.getSprite().getPosition().y > topMostPos + 1000) {
             currentState = GAME_OVER;
         }
+
     }
 }
 

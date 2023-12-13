@@ -9,7 +9,9 @@ Distraction::Distraction(float x, float y) {
             std::cout << "Failed to load Woman.png" << std::endl;
         }
     }
-    sprite.setTexture(texture);
+
+    // same application as Money.cpp
+    sprite.setTexture(texture); 
     sprite.setPosition(x, y);
 
     float desiredWidth = 40.0f;

@@ -45,4 +45,4 @@ private:
     float highestPlatformY;
 };
 
-#endif // GAME_H
+#endif 

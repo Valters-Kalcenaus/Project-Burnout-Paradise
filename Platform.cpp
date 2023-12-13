@@ -2,7 +2,7 @@
 
 Platform::Platform(float x, float y, float width, float height, sf::Color color) {
     shape.setPosition(x, y);
-    shape.setSize(sf::Vector2f(width, height));
+    shape.setSize(sf::Vector2f(width, height)); //draws vector based on float values
     shape.setFillColor(color);
 }
 

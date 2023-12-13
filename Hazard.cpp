@@ -2,22 +2,24 @@
 
 Hazard::Hazard(float y) {
     shape.setPosition(0, y);
-    shape.setSize(sf::Vector2f(800, 800)); // Adjust size as needed
-    shape.setFillColor(sf::Color::Yellow); // Color for visibility
+    shape.setSize(sf::Vector2f(800, 800));
+    shape.setFillColor(sf::Color::Yellow);
 }
 
 void Hazard::update(sf::Time deltaTime) {
-    // Move the hazard up constantly
-    float speed = 100.f; // Adjust speed as needed
-    shape.move(0, -speed * deltaTime.asSeconds());
+    float speed = 100.f;
+    shape.move(0, -speed * deltaTime.asSeconds()); // Move the hazard upwards.
+
 }
 
+// Reset position.
 void Hazard::reset() {
     shape.setPosition(0, 600);
 }
 
 void Hazard::chaseCorrect(float playerPos) {
-    shape.setPosition(0, playerPos + 1000);
+    shape.setPosition(0, playerPos + 1000); // Set the hazard's position to a fixed distance below the player.
+
 }
 
 void Hazard::draw(sf::RenderTarget& target, sf::RenderStates states) const {

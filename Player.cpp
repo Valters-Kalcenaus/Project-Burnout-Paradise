@@ -3,6 +3,8 @@
 
 sf::Texture Player::texture;
 
+
+// sets the initial values every time the game starts.
 Player::Player() : isJumping(false), jumpVelocity(-900.f), energy(100.f), money(100.f), score(0.f), jumpCount(0), isSleeping(false), callingParents(false) {
     if (!texture.loadFromFile("Player.png")) {
         std::cout << "Failed to load Player.png" << std::endl;
@@ -84,10 +86,9 @@ void Player::update(sf::Time deltaTime) {
 void Player::reset() {
     sprite.setPosition(300.f - sprite.getGlobalBounds().width / 2, 600.f - 300.f - sprite.getGlobalBounds().height);
     isJumping = false;
-    energy = 100.f; // Reset energy and other relevant stats
+    energy = 100.f; 
     money = 100.f;
     score = 0.f;
-    // Reset other player attributes as needed
 }
 
 void Player::sleep(sf::Time deltaTime) {
@@ -95,7 +96,6 @@ void Player::sleep(sf::Time deltaTime) {
         addEnergy(10.0f);
         sleepTimer.restart();
     }
-    //CHANGE TO SLEEPING
     //shape.setFillColor(sf::Color::Blue);
 }
 
@@ -104,7 +104,6 @@ void Player::call(sf::Time deltaTime) {
         addMoney(5.0f);
         callTimer.restart();
     }
-    //CHANGE TO CALLING
     //shape.setFillColor(sf::Color::Red);
 }
 
@@ -117,14 +116,12 @@ void Player::deadBeat(sf::Time deltaTime) {
 
 void Player::wakeUp() {
     isSleeping = false;
-    //CHANGE TO RESET THE SPRITE
     //shape.setFillColor(sf::Color::Green); // Change color back to green
     sleepTimer.restart();
 }
 
 void Player::stopCalling() {
     callingParents = false;
-    // CHANGE TO RESET THE SPRITE
     // shape.setFillColor(sf::Color::Green); // Change color back to green
     sleepTimer.restart();
 }
@@ -145,6 +142,7 @@ void Player::setVelocityX(float vx) {
     }
 }
 
+// controls for player movement
 void Player::handleInput() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
         isSleeping = true;
@@ -167,14 +165,14 @@ void Player::handleInput() {
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
             if (sprite.getPosition().x > 0) {
-                setVelocityX(-200.f); // Move left
+                setVelocityX(-200.f); 
             } else {
                 setVelocityX(0.f);
             }
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             if (sprite.getPosition().x < 600 - sprite.getGlobalBounds().height) {
-                setVelocityX(200.f); // Move right
+                setVelocityX(200.f); 
             } else {
                 setVelocityX(0.f);
             }
@@ -192,7 +190,7 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 bool Player::isFalling() const {
     return velocity.y > 0;
 }
-
+// player is standing on surface
 void Player::land(float y) {
     isJumping = false;
     velocity.y = 0;

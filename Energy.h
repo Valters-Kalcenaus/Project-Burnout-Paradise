@@ -19,4 +19,4 @@ private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };
 
-#endif // ENERGY_H
+#endif 

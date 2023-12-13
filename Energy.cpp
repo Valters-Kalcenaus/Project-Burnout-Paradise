@@ -3,6 +3,8 @@
 
 sf::Texture Energy::texture;
 
+//same application as Distraction.cpp and Money.cpp
+
 Energy::Energy(float x, float y) {
     if (texture.getSize().x == 0) {
         if (!texture.loadFromFile("Energy.png")) {
